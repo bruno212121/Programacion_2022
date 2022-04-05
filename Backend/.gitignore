@@ -1,9 +1,0 @@
-/bin
-/include
-/lib
-/lib64
-/share
-/.idea
-pyvenv.cfg
-.env
-requisitos.txt
