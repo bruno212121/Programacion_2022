@@ -3,5 +3,6 @@
 /lib64
 /share
 /include
+/.idea
 /pyvenv.cfg
 /.env
