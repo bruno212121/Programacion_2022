@@ -3,7 +3,7 @@ from flask import request
 
 
 QUALIFICATION = {
-    1: {'qualification': 5 },
+    1: {'qualification': 5},
     2: {'qualification': 7},
     3: {'qualification': 8}
 }
