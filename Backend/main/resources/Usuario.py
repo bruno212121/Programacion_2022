@@ -14,6 +14,15 @@ class User(Resource):
         if int(id) in USUARIOS:
             return USUARIOS[int(id)]
         return '', 404
+
+    def put(self, id):
+        if int(id) in USUARIOS:
+            user = USUARIOS[int(id)]
+            data = request.get_json()
+            user.update(data)
+            return user, 201
+        return '', 404
+
     def delete(self, id):
         if int(id) in USUARIOS:
             del USUARIOS[int(id)]
