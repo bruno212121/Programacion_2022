@@ -1,28 +1,27 @@
 from flask_restful import Resource
 from flask import request
+from .. import db
+from main.models import PoemaModel
 
-POEMAS = {
-    1: {'firstname': 'DON QUIJOTE0', 'lastname': 'DE LA MANCHA'},
-    2: {'firstname': 'HERCULES', 'lastname': 'GAGO'},
-}
 
 class Poem(Resource):
     def get(self,id):
-        if int(id) in POEMAS:
-            return POEMAS[int(id)]
-        return '', 404
+        poem = db.session.query(PoemaModel).get_or_404(id)
+        return poem.to_json()
 
-    def delete(self,id):
-        if int(id) in POEMAS:
-            del POEMAS[int(id)]
-            return '', 204
-        return '', 404
+def delete(self,id):
+        poem = db.session.query(PoemaModel).get_or_404(id)
+        db.session.delete(poem)
+        db.session.commit()
+        return '', 204
 
 class Poems(Resource):
     def get(self):
-        return POEMAS
+        poems = db.session.query(PoemaModel).all()
+        return jsonify([poem.to_json_short() for poem in poems])
+
     def post(self):
-        poem = request.get_json()
-        id = int(max(POEMAS.keys())) + 1
-        POEMAS[id] = poem
-        return POEMAS[id], 201
+        poem = PoemaModel.from_json(request.get_json())
+        db.session.add(poem)
+        db.session.commit()
+        return poem.to_json(), 201
