@@ -1,29 +1,28 @@
 from flask_restful import Resource
-from flask import request
+from flask import request, jsonify
+from .. import db
+from main.models import QualificationModel
 
-
-QUALIFICATION = {
-    1: {'qualification': 5},
-    2: {'qualification': 7},
-    3: {'qualification': 8}
-}
 
 class Qualification(Resource):
     def delete(self, id):
-        if int(id) in QUALIFICATION:
-            del QUALIFICATION[int(id)]
-            return '', 204
-        return '', 404
+        quali = db.session.query(QualificationModel).get_or_404(id)
+        db.session.delete(quali)
+        db.session.commit()
+        return '', 204
+
     def get(self, id):
-        if int(id) in QUALIFICATION:
-            return QUALIFICATION[int(id)]
-        return '', 404
+        quali = db.session.query(QualificationModel).get_or_404(id)
+        return quali.to_json()
+
 
 class Qualifications(Resource):
     def get(self):
-        return QUALIFICATION
+        quali = db.session.query(QualificationModel).all()
+        return jsonify([quali.to_json_short() for quali in quali])
+
     def post(self):
-        quali = request.get_json()
-        id = int(max(QUALIFICATION.keys())) + 1
-        QUALIFICATION[(id)] = quali
-        return QUALIFICATION[id], 201
+        quali = PoemModel.from_json(request.get_json())
+        db.session.add(quali)
+        db.session.commit()
+        return poem.to_json(), 201

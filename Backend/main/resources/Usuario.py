@@ -1,40 +1,34 @@
 from flask_restful import Resource
-from flask import request
-
-USUARIOS = {
-    1 : {'firstname' : 'Sacha', 'lastname' : 'Fenske'},
-    2 : {'firstname' : 'Santiago', 'lastname' : 'Moyano'},
-    3 : {'firstname' : 'Lucas', 'lastname' : 'Galdame'},
-    4 : {'firstname' : 'Bruno', 'lastname' : 'Rosales'},
-    5 : {'firstname' : 'Douglas', 'lastname' : 'Arenas'}
-}
+from flask import request, jsonify
+from .. import db
+from main.models import UserModel
 
 class User(Resource):
     def get(self,id):
-        if int(id) in USUARIOS:
-            return USUARIOS[int(id)]
-        return '', 404
+        user = db.session.query(UserModel).get_or_404(id)
+        return user.to_json()
 
     def put(self, id):
-        if int(id) in USUARIOS:
-            user = USUARIOS[int(id)]
-            data = request.get_json()
-            user.update(data)
-            return user, 201
-        return '', 404
+        user = db.session.query(UserModel).get_or_404(id)
+        data = request.get_json().items()
+        for key, value in data:
+            setattr(user, key, value)
+        db.session.add(user)
+        db.session.commit()
+        return user.to_json(), 201
 
     def delete(self, id):
-        if int(id) in USUARIOS:
-            del USUARIOS[int(id)]
-            return '', 204
-        return '', 404
+        user = db.session.query(UserModel).get_or_404(id)
+        db.session.delete(user)
+        db.session.commit()
+        return '', 204
 
 class Users(Resource):
     def get(self):
-        return USUARIOS
+        users = db.session.query(UserModel).all()
+        return jsonify([user.to_json_short() for user in users])
     def post(self):
-        user = request.get_json()
-        id = int(max(USUARIOS.keys())) + 1
-        USUARIOS[(id)] = user
-        return USUARIOS[id], 201
-
+        user = UserModel.from_json(request.get_json())
+        db.session.add(user)
+        db.session.commit()
+        return user.to_json(), 201

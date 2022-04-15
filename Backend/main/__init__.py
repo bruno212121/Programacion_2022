@@ -3,7 +3,7 @@ from flask import Flask
 from dotenv import load_dotenv
 from flask_restful import Api
 from flask_sqlalchemy import SQLAlchemy
-import main.resources as resources
+
 
 #inicializar SQLAlchemy
 db = SQLAlchemy()
@@ -26,6 +26,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////' + os.getenv('DATABASE_PATH') + os.getenv('DATABASE_NAME')
     db.init_app(app)
 
+    import main.resources as resources
     #
     #Aquí se inicializarán el resto de los módulos de la aplicación
     #
