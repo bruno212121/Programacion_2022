@@ -1,1 +1,1 @@
-from .Poema import Poema as PoemaModel
+from .Poema import Poem as PoemModel

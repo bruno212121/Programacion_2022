@@ -2,7 +2,9 @@ import os
 from flask import Flask
 from dotenv import load_dotenv
 from flask_restful import Api
+from flask_sqlalchemy import SQLAlchemy
 import main.resources as resources
+
 #inicializar SQLAlchemy
 db = SQLAlchemy()
 api = Api()
