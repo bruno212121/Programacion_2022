@@ -6,17 +6,23 @@ class User(db.Model):
     email = db.Column(db.String(100), nullable=False)
     approbation = db.Column(db.String(100), nullable=False)
     rol = db.Column(db.String(100), nullable=False)
+    qualification = db.relationship('Qualification', back_populates="user", cascade="all, delete-orphan")
+    poem = db.relationship('Poem', back_populates="user", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Name: {self.name}, Email: {self.email}, Pass: {self.approbation}, Rol: {self.rol}>'
 
     def to_json(self):
+        qualification = [quali.to_json() for quali in self.qualification]
+        poem = [poem.to_json() for poem in self.poem]
         user_json = {
             'id': self.id,
             'name': self.name,
             'email': self.email,
             'approbation': self.approbation,
             'rol': self.rol,
+            'qualification': qualification,
+            'poem': poem,
         }
         return user_json
 
