@@ -1,4 +1,5 @@
 from .. import db
+import datetime
 
 class Poem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -6,8 +7,11 @@ class Poem(db.Model):
     title = db.Column(db.String(100), nullable=False)
     body = db.Column(db.String(100), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
+
+
     user = db.relationship('User', back_populates="poem", uselist=False, single_parent=True)
     qualification = db.relationship('Qualification', back_populates="poem", cascade="all, delete-orphan")
+
 
     def __repr__(self):
         return f'<Title: {self.title}, UserId: {self.user_id}, Poem: {self.body}, Date: {self.date}>'
@@ -19,19 +23,10 @@ class Poem(db.Model):
             'userId': self.userId,
             'title': self.title,
             'body': self.body,
-            'date': self.date,
-            'user': user,
-            'qualification': qualification
+            'date': str(self.date.strftime("%d-%m-%Y")),
         }
         return poem_json
 
-    def to_json_short(self):
-        poem_json = {
-            'id': self.id,
-            'title': self.title,
-            'body': self.body,
-        }
-        return poem_json
 
     @staticmethod
 
@@ -40,10 +35,8 @@ class Poem(db.Model):
         userId = poem_json.get('userId')
         title = poem_json.get('title')
         body = poem_json.get('body')
-        date = poem_json.get('date')
         return Poem(id=id,
                      userId=userId,
                      title=title,
                      body=body,
-                    date=date,
                      )

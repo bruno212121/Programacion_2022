@@ -6,8 +6,11 @@ class Qualification(db.Model):
     poemId = db.Column(db.Integer, db.ForeignKey('poem.id'), nullable=False)
     score = db.Column(db.Integer, primary_key=False)
     comment = db.Column(db.String(100), nullable=False)
+
+
     user = db.relationship('User', back_populates="qualification", uselist=False, single_parent=True)
     poem = db.relationship('Poem', back_populates="qualification", uselist=False, single_parent=True)
+
 
     def __repr__(self):
         return f'<UserId: {self.userId}, PoemId: {self.poemId}, Score: {self.score}, Comment: {self.comment}>'
@@ -16,10 +19,11 @@ class Qualification(db.Model):
         poem = [poem.to_json() for poem in self.poem]
         user = [user.to_json() for user in self.user]
         quali_json = {
-            'userId': self.userId,
-            'poemId': self.poemId,
-            'score': self.score,
-            'comment': self.comment,
+            'id': self.id,
+            'name': (self.name),
+            'password': (self.password),
+            'rol': (self.rol),
+            'email': (self.email),
             'poem': poem,
             'user': user,
         }

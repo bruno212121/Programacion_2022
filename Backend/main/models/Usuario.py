@@ -4,13 +4,16 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
-    approbation = db.Column(db.String(100), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     rol = db.Column(db.String(100), nullable=False)
+
+
     qualification = db.relationship('Qualification', back_populates="user", cascade="all, delete-orphan")
     poem = db.relationship('Poem', back_populates="user", cascade="all, delete-orphan")
 
+
     def __repr__(self):
-        return f'<Name: {self.name}, Email: {self.email}, Pass: {self.approbation}, Rol: {self.rol}>'
+        return f'<Name: {self.name}, Email: {self.email}, Pass: {self.password}, Rol: {self.rol}>'
 
     def to_json(self):
         qualification = [quali.to_json() for quali in self.qualification]
@@ -19,7 +22,7 @@ class User(db.Model):
             'id': self.id,
             'name': self.name,
             'email': self.email,
-            'approbation': self.approbation,
+            'password': self.password,
             'rol': self.rol,
             'qualification': qualification,
             'poem': poem,
@@ -30,6 +33,9 @@ class User(db.Model):
         user_json = {
             'id': self.id,
             'name': self.name,
+            'password': self.password,
+            'rol': self.rol,
+            'email': self.email,
         }
         return user_json
 
@@ -39,11 +45,11 @@ class User(db.Model):
         id = user_json.get('id')
         name = user_json.get('name')
         email = user_json.get('email')
-        approbation = user_json.get('approbation')
+        password = user_json.get('password')
         rol = user_json.get('rol')
         return User(id=id,
                     name=name,
                     email=email,
-                    approbation=approbation,
+                    password=password,
                     rol=rol,
                     )
