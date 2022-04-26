@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import request, jsonify
 from .. import db
 from main.models import QualificationModel
-
+from sqlalchemy import func
 
 class Qualification(Resource):
     def delete(self, id):
@@ -18,7 +18,18 @@ class Qualification(Resource):
 
 class Qualifications(Resource):
     def get(self):
-        quali = db.session.query(QualificationModel).all()
+        page = 1
+        per_page = 10
+        quali = db.session.query(QualificationModel)
+        if request.get_json():
+            filters = request.get_json().items()
+            for key, value in filters:
+                if key == "page":
+                    page = int(value)
+                if key == "per_page":
+                    per_page = int(value)
+                if key == 
+
         return jsonify([quali.to_json_short() for quali in quali])
 
     def post(self):
