@@ -1,5 +1,6 @@
 from .. import db
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -7,10 +8,8 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
     rol = db.Column(db.String(100), nullable=False)
 
-
     qualification = db.relationship('Qualification', back_populates="user", cascade="all, delete-orphan")
     poem = db.relationship('Poem', back_populates="user", cascade="all, delete-orphan")
-
 
     def __repr__(self):
         return f'<Name: {self.name}, Email: {self.email}, Pass: {self.password}, Rol: {self.rol}>'
@@ -40,7 +39,6 @@ class User(db.Model):
         return user_json
 
     @staticmethod
-
     def from_json(user_json):
         id = user_json.get('id')
         name = user_json.get('name')

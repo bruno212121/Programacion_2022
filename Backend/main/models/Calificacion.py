@@ -1,5 +1,6 @@
 from .. import db
 
+
 class Qualification(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -7,10 +8,8 @@ class Qualification(db.Model):
     score = db.Column(db.Integer, primary_key=False)
     comment = db.Column(db.String(100), nullable=False)
 
-
     user = db.relationship('User', back_populates="qualification", uselist=False, single_parent=True)
     poem = db.relationship('Poem', back_populates="qualification", uselist=False, single_parent=True)
-
 
     def __repr__(self):
         return f'<UserId: {self.userId}, PoemId: {self.poemId}, Score: {self.score}, Comment: {self.comment}>'
@@ -40,7 +39,6 @@ class Qualification(db.Model):
         return quali_json
 
     @staticmethod
-
     def from_json(quali_json):
         id = quali_json.get('id')
         poemId = quali_json.get('poemId')
@@ -51,4 +49,3 @@ class Qualification(db.Model):
                      score=score,
                      comment=comment,
                      )
-

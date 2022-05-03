@@ -18,18 +18,7 @@ class Qualification(Resource):
 
 class Qualifications(Resource):
     def get(self):
-        page = 1
-        per_page = 10
-        quali = db.session.query(QualificationModel)
-        if request.get_json():
-            filters = request.get_json().items()
-            for key, value in filters:
-                if key == "page":
-                    page = int(value)
-                if key == "per_page":
-                    per_page = int(value)
-                if key == 
-
+        quali = db.session.query(QualificationModel).all()
         return jsonify([quali.to_json_short() for quali in quali])
 
     def post(self):
