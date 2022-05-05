@@ -21,10 +21,12 @@ class User(db.Model):
             'id': self.id,
             'name': self.name,
             'email': self.email,
-            'password': self.password,
-            'rol': self.rol,
+           # 'password': self.password,
+            #'rol': self.rol,
             'qualification': qualification,
             'poem': poem,
+            'poem_amount': len(self.poem),
+            'qualification_amount': len(self.qualification),
         }
         return user_json
 

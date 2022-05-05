@@ -3,6 +3,7 @@ from flask import request, jsonify
 from .. import db
 from main.models import UserModel
 
+
 class User(Resource):
     def get(self,id):
         user = db.session.query(UserModel).get_or_404(id)
@@ -25,8 +26,24 @@ class User(Resource):
 
 class Users(Resource):
     def get(self):
-        users = db.session.query(UserModel).all()
-        return jsonify([user.to_json_short() for user in users])
+        page = 1
+        per_page = 10
+        users = db.session.query(UserModel)
+        if request.get_json():
+            filters = request.get_json().items()
+            for key, value in filters:
+                if key == "page":
+                    page = int(value)
+                if key == "per_page":
+                    per_page = int(value)
+                if key == "name":
+                    users = users.filter(UserModel.name.like("%"+value+"%"))
+        users = users.paginate(page, per_page, True, 30)
+        return jsonify({'users': [user.to_json() for user in users.items],
+                        'total': users.total,
+                        'page': page
+                        })
+
     def post(self):
         user = UserModel.from_json(request.get_json())
         db.session.add(user)

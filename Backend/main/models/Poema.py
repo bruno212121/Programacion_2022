@@ -1,5 +1,5 @@
+import statistics
 from .. import db
-import datetime
 
 
 class Poem(db.Model):
@@ -15,6 +15,15 @@ class Poem(db.Model):
     def __repr__(self):
         return f'<Title: {self.title}, UserId: {self.user_id}, Poem: {self.body}, Date: {self.date}>'
 
+    def get_average_qualification(self):
+        if len(self.qualification) == 0:
+            return 0
+        else:
+            qualification_list = []
+            for qualification in self.qualification:
+                qualification_list.append(qualification.qualification)
+                return statistics.mean(qualification_list)
+
     def to_json(self):
         poem_json = {
             'id': self.id,
@@ -22,6 +31,7 @@ class Poem(db.Model):
             'title': self.title,
             'body': self.body,
             'date': str(self.date.strftime("%d-%m-%Y")),
+            'avg_qualification': self.get_average_qualification(),
         }
         return poem_json
 
