@@ -32,10 +32,11 @@ def create_app():
     #
     api.add_resource(resources.PoemsResource, '/poems')
     api.add_resource(resources.PoemResource, '/poem/<id>')
-    api.add_resource(resources.QualificationsResource, '/qualifications')
-    api.add_resource(resources.QualificationResource, '/qualification/<id>')
+    api.add_resource(resources.ScoreResource, '/score/<id>')
+    api.add_resource(resources.ScoresResource, '/scores')
     api.add_resource(resources.UsersResource, '/users')
     api.add_resource(resources.UserResource, '/user/<id>')
+
     api.init_app(app)
     #Retornar aplicación inicializada
     return app

@@ -5,7 +5,8 @@ from main.models import UserModel
 
 
 class User(Resource):
-    def get(self,id):
+
+    def get(self, id):
         user = db.session.query(UserModel).get_or_404(id)
         return user.to_json()
 
@@ -24,7 +25,9 @@ class User(Resource):
         db.session.commit()
         return '', 204
 
+
 class Users(Resource):
+
     def get(self):
         page = 1
         per_page = 10
@@ -35,17 +38,24 @@ class Users(Resource):
                 if key == "page":
                     page = int(value)
                 if key == "per_page":
-                    per_page = int(value)
+                    per_page = value
                 if key == "name":
                     users = users.filter(UserModel.name.like("%"+value+"%"))
+
+                if key == 'sort_by':
+                    if value == 'name':
+                        users = users.orden_by(UserModel.name)
+                    if value == 'name[desc]':
+                        users = users.orden_by(UserModel.name.desc())
+
         users = users.paginate(page, per_page, True, 30)
-        return jsonify({'users': [user.to_json() for user in users.items],
+        return jsonify({'users': [user.to_json() for user in users.items()],
                         'total': users.total,
-                        'page': page
-                        })
+                        'pages': users.pages,
+                        'page': page})
 
     def post(self):
-        user = UserModel.from_json(request.get_json())
-        db.session.add(user)
+        users = UserModel.from_json(request.get_json())
+        db.session.add(users)
         db.session.commit()
-        return user.to_json(), 201
+        return users.to_json(), 201

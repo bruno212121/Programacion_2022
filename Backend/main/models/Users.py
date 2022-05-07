@@ -1,4 +1,4 @@
-from .. import db
+from .. import   db
 
 
 class User(db.Model):
@@ -8,25 +8,23 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
     rol = db.Column(db.String(100), nullable=False)
 
-    qualification = db.relationship('Qualification', back_populates="user", cascade="all, delete-orphan")
-    poem = db.relationship('Poem', back_populates="user", cascade="all, delete-orphan")
+    scores = db.relationship('Score', back_populates="user", cascade="all, delete-orphan")
+    poems = db.relationship('Poem', back_populates="user", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Name: {self.name}, Email: {self.email}, Pass: {self.password}, Rol: {self.rol}>'
 
     def to_json(self):
-        qualification = [quali.to_json() for quali in self.qualification]
-        poem = [poem.to_json() for poem in self.poem]
         user_json = {
             'id': self.id,
             'name': self.name,
             'email': self.email,
            # 'password': self.password,
             #'rol': self.rol,
-            'qualification': qualification,
-            'poem': poem,
-            'poem_amount': len(self.poem),
-            'qualification_amount': len(self.qualification),
+            'scores': [score.to_json() for score in self.scores],
+            'poems': [poem.to_json() for poem in self.poems],
+            'poem_amount': len(self.poems),
+            'score_amount': len(self.scores),
         }
         return user_json
 
@@ -34,8 +32,8 @@ class User(db.Model):
         user_json = {
             'id': self.id,
             'name': self.name,
-            'password': self.password,
-            'rol': self.rol,
+           # 'password': self.password,
+           # 'rol': self.rol,
             'email': self.email,
         }
         return user_json

@@ -1,3 +1,3 @@
-from .Poema import Poem as PoemModel
-from .Calificacion import Qualification as QualificationModel
-from .Usuario import User as UserModel
+from .Poems import Poem as PoemModel
+from .Scores import Score as ScoreModel
+from .Users import User as UserModel

@@ -1,10 +1,12 @@
 from flask_restful import Resource
 from flask import request, jsonify
 from .. import db
-from main.models import PoemModel
-
+from main.models import PoemModel, UserModel, ScoreModel
+from datetime import datetime
+from sqlalchemy import func
 
 class Poem(Resource):
+
     def get(self, id):
         poem = db.session.query(PoemModel).get_or_404(id)
         return poem.to_json()
@@ -15,7 +17,9 @@ class Poem(Resource):
         db.session.commit()
         return '', 204
 
+
 class Poems(Resource):
+
     def get(self):
         page = 1
         per_page = 10
@@ -32,9 +36,9 @@ class Poems(Resource):
                 if key == 'userId':
                     poems = poems.filter(PoemModel.userId == value)
                 if key == 'date[gte]':
-                    poems = poems.filter(PoemModel.date >= datetime.strptime(value, '%d-%m-%y'))
+                    poems = poems.filter(PoemModel.date >= datetime.strptime(value, '%y-%m-%d'))
                 if key == 'date[lte]':
-                    poems = poems.filter(PoemModel.date <= datetime.strptime(value, '%d-%m-%y'))
+                    poems = poems.filter(PoemModel.date <= datetime.strptime(value, '%y-%m-%d'))
                 if key == 'author':
                     poems = poems.filter(PoemModel.user.has(UserModel.name.like('%' + value + '%')))
 
@@ -44,13 +48,13 @@ class Poems(Resource):
                     if value == 'date[desc]':
                         poems = poems.orden_by(PoemModel.date.desc())
                     if value == 'score':
-                        poems = poems.outerjoin(PoemModel.score).group_by(PoemModel.id).orden_by(func.avg(QualificationModel.score))
+                        poems = poems.outerjoin(PoemModel.scores).group_by(PoemModel.id).orden_by(func.avg(ScoreModel.score))
                     if value == 'score[desc]':
-                        poems = poems.outerjoin(PoemModel.score).group_by(PoemModel.id).orden_by(func.avg(QualificationModel.score).desc())
+                        poems = poems.outerjoin(PoemModel.scores).group_by(PoemModel.id).orden_by(func.avg(ScoreModel.score).desc())
                     if value == 'author':
-                        poems = poems.outerjoin(PoemModel.score).group_by(PoemModel.id).orden_by(UserModel.name)
+                        poems = poems.outerjoin(PoemModel.scores).group_by(PoemModel.id).orden_by(UserModel.name)
                     if value == 'author[desc]':
-                        poems = poems.outerjoin(PoemModel.score).group_by(PoemModel.id).orden_by(UserModel.name.desc())
+                        poems = poems.outerjoin(PoemModel.scores).group_by(PoemModel.id).orden_by(UserModel.name.desc())
 
         poems = poems.paginate(page, per_page, True, 10)
         return jsonify({"poems": [poems.to_json_short() for poem in poems.items()],
@@ -59,7 +63,7 @@ class Poems(Resource):
                         "page": page})
 
     def post(self):
-        poem = PoemModel.from_json(request.get_json())
-        db.session.add(poem)
+        poems = PoemModel.from_json(request.get_json())
+        db.session.add(poems)
         db.session.commit()
-        return poem.to_json(), 201
+        return poems.to_json(), 201

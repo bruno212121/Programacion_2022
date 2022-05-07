@@ -1,6 +1,6 @@
-from .Poema import Poems as PoemsResource
-from .Poema import Poem as PoemResource
-from .Calificación import Qualifications as QualificationsResource
-from .Calificación import Qualification as QualificationResource
-from .Usuario import Users as UsersResource
-from .Usuario import User as UserResource
+from .poem import Poems as PoemsResource
+from .poem import Poem as PoemResource
+from .score import Score as ScoreResource
+from .score import Scores as ScoresResource
+from .user import Users as UsersResource
+from .user import User as UserResource
