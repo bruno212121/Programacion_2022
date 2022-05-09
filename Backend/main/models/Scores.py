@@ -34,6 +34,8 @@ class Score(db.Model):
     def to_json_short(self):
         score_json = {
             'id': self.id,
+            'userId': self.userId,
+            'poemId': self.poemId,
             'score': int(self.score),
             'comment': str(self.comment),
         }
@@ -42,10 +44,12 @@ class Score(db.Model):
     @staticmethod
     def from_json(score_json):
         id = score_json.get('id')
+        userId = score_json.get('userId')
         poemId = score_json.get('poemId')
         score = score_json.get('score')
         comment = score_json.get('comment')
-        return score(id=id,
+        return Score(id=id,
+                     userId=userId,
                      poemId=poemId,
                      score=score,
                      comment=comment,

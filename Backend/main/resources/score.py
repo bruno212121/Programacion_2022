@@ -14,7 +14,7 @@ class Score(Resource):
 
     def get(self, id):
         score = db.session.query(ScoreModel).get_or_404(id)
-        return score.to_json()
+        return score.to_json_short()
 
 
 class Scores(Resource):
@@ -27,4 +27,4 @@ class Scores(Resource):
         score = ScoreModel.from_json(request.get_json())
         db.session.add(score)
         db.session.commit()
-        return score.to_json(), 201
+        return score.to_json_short(), 201

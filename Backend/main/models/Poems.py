@@ -1,12 +1,13 @@
 import statistics
 from .. import db
+from datetime import datetime
 
 
 class Poem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     body = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.DateTime, nullable=False)
+    date = db.Column(db.DateTime, nullable=False, default=datetime.now())
     userId = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     user = db.relationship('User', back_populates='poems', uselist=False, single_parent=True)
