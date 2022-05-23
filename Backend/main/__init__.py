@@ -48,7 +48,7 @@ def create_app():
 
     from main.auth import routes
     # Importar blueprint
-    app.register_blueprint(routes.auth)
+    app.register_blueprint(auth.routes.auth)
 
     #Retornar aplicación inicializada
     return app

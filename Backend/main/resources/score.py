@@ -7,12 +7,6 @@ from main.auth.decorators import poeta_required, admin_required_or_poeta_require
 
 class Score(Resource):
     @jwt_required()
-    def delete(self, id):
-        score = db.session.query(ScoreModel).get_or_404(id)
-        db.session.delete(score)
-        db.session.commit()
-        return '', 204
-    @jwt_required()
     def get(self, id):
         score = db.session.query(ScoreModel).get_or_404(id)
         return score.to_json_short()
@@ -22,6 +16,19 @@ class Score(Resource):
         data = request.get_json().items()
         for key, value in data:
             setattr(score, key, value)
+    @jwt_required
+    def delete(self, id):
+        claims = get_jwt()
+        user_id = get_jwt_identity()
+        score = db.session.query(ScoreModel).get_or_404(id)
+        if "rol" in claims:
+            if claims['rol'] == "admin" or user_id == score.user_id:
+                db.session.delete(score)
+                db.session.commit()
+                return '', 204
+            else:
+                return "Only admins and users can delete qualifications"
+
 
 class Scores(Resource):
     @jwt_required()
