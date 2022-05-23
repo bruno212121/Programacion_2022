@@ -2,7 +2,6 @@ import statistics
 from .. import db
 from datetime import datetime
 
-
 class Poem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -12,6 +11,7 @@ class Poem(db.Model):
 
     user = db.relationship('User', back_populates='poems', uselist=False, single_parent=True)
     scores = db.relationship('Score', back_populates='poem', cascade='all, delete-orphan')
+
 
     def __repr__(self):
         poem_json = {

@@ -4,22 +4,23 @@ from .. import db
 from main.models import PoemModel, UserModel, ScoreModel
 from datetime import datetime
 from sqlalchemy import func
-
+from main.auth.decorators import admin_required_or_poeta_required, poeta_required
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 class Poem(Resource):
-
+    @jwt_required()
     def get(self, id):
         poem = db.session.query(PoemModel).get_or_404(id)
         return poem.to_json()
 
+    @admin_required_or_poeta_required
     def delete(self, id):
         poem = db.session.query(PoemModel).get_or_404(id)
         db.session.delete(poem)
         db.session.commit()
         return '', 204
 
-
 class Poems(Resource):
-
+    @jwt_required(optional=True)
     def get(self):
         page = 1
         per_page = 10
@@ -61,7 +62,7 @@ class Poems(Resource):
                         "total": poems.total,
                         "pages": poems.pages,
                         "page": page})
-
+    @poeta_required
     def post(self):
         poems = PoemModel.from_json(request.get_json())
         db.session.add(poems)

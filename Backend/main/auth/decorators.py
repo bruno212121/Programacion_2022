@@ -1,15 +1,37 @@
 from .. import jwt
 from flask import jsonify
-from flask_jwt_extended import verify_jwt_inrequest, get_jwt
+from flask_jwt_extended import verify_jwt_in_request, get_jwt
 from functools import wraps
 
 def admin_required(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
-        verify_jwt_inrequest()
+        verify_jwt_in_request()
         claims = get_jwt()
         if claims['rol'] == 'admin':
             return fn(*args, **kwargs)
+        else:
+            return 'Only admins can access', 403
+        return wrapper
+
+def admin_required_or_poeta_required(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        verify_jwt_in_request()
+        claims = get_jwt()
+        if claims['rol'] == 'admin' or claims['rol'] == 'poeta':
+            return fn(**args, **kwargs)
+        else:
+            return 'Only admins can access', 403
+        return wrapper
+
+def poeta_required(fn):
+    @wraps(fn)
+    def wrapper(*args, **kwargs):
+        verify_jwt_in_request()
+        claims = get_jwt()
+        if claims['rol'] == 'poeta':
+            return fn(**args, **kwargs)
         else:
             return 'Only admins can access', 403
         return wrapper

@@ -7,7 +7,7 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    rol = db.Column(db.String(100), nullable=False)
+    rol = db.Column(db.String(100), nullable=False, default="poeta")
 
     scores = db.relationship('Score', back_populates="user", cascade="all, delete-orphan")
     poems = db.relationship('Poem', back_populates="user", cascade="all, delete-orphan")
@@ -30,7 +30,7 @@ class User(db.Model):
         user_json = {
             'id': self.id,
             'name': self.name,
-            'email': self.email,
+           # 'email': self.email,
            # 'password': self.password,
             #'rol': self.rol,
             'scores': [score.to_json() for score in self.scores],
@@ -46,7 +46,7 @@ class User(db.Model):
             'name': self.name,
            # 'password': self.password,
            # 'rol': self.rol,
-            'email': self.email,
+           # 'email': self.email,
         }
         return user_json
 
@@ -60,6 +60,6 @@ class User(db.Model):
         return User(id=id,
                     name=name,
                     email=email,
-                    password=password,
+                    plain_password=password,
                     rol=rol,
                     )
