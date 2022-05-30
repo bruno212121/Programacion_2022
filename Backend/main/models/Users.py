@@ -30,8 +30,8 @@ class User(db.Model):
         user_json = {
             'id': self.id,
             'name': self.name,
-           # 'email': self.email,
-            'password': self.password,
+            'email': self.email,
+           # 'password': self.password,
             #'rol': self.rol,
             'scores': [score.to_json() for score in self.scores],
             'poems': [poem.to_json() for poem in self.poems],

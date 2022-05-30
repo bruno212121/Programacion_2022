@@ -1,0 +1,9 @@
+Bienvenido {{User.name}} {{User.email}}!
+
+Gracias por registrarte en nuestro sistema.
+
+Con nuestro servicio podras:
+
+- Cargar tus Poemas
+- Eliminar poemas
+- Buscar Poemas propios o de otro poeta que te interese
