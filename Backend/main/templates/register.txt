@@ -7,4 +7,7 @@ Con nuestro servicio podras:
 - Cargar tus Poemas
 - Eliminar poemas
 - Buscar Poemas propios o de otro poeta que te interese
+<<<<<<< HEAD
 - Ver Calificaciones
+=======
+>>>>>>> @{u}
