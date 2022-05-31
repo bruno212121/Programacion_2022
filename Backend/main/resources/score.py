@@ -51,7 +51,7 @@ class Scores(Resource):
                 score.userId = int(user_id)
                 db.session.add(score)
                 db.session.commit()
-                sent = sendMail([score.poem.user], "Has recibido una calificación", 'register', user_score=user_score,
+                sent = sendMail([score.poem.user.email], "Has recibido una calificación", 'score', user_score=user_score,
                                 user=score.poem.user, poem=score.poem)
                 return score.to_json(), 201
             else:

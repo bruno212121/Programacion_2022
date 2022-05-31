@@ -8,7 +8,7 @@ from main.auth.decorators import admin_required, admin_required_or_poeta_require
 
 class User(Resource):
 
-    @jwt_required
+    @jwt_required()
     def get(self, id):
         user = db.session.query(UserModel).get_or_404(id)
         return user.to_json()
