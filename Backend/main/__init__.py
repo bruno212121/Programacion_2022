@@ -54,7 +54,7 @@ def create_app():
     app.register_blueprint(auth.routes.auth)
 
     #Configuración de mail
-    app.config['MAIL_HOSTNAME'] = os.getenv('MAIL_HOSTNAME')
+   #app.config['MAIL_HOSTNAME'] = os.getenv('MAIL_HOSTNAME')
     app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
     app.config['MAIL_PORT'] = os.getenv('MAIL_PORT')
     app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS')

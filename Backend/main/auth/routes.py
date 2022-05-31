@@ -44,4 +44,4 @@ def register():
         except Exception as error:
             db.session.rollback()
             return str(error), 409
-        return user.to_json() , 201
+        return user.to_json(), 201
