@@ -13,10 +13,26 @@ def user_main():
 @app.route('/usuario_main/crear_poema')
 def crear_poema():
     return render_template('Crear_poema.html')
+
+@app.route('/usuario_main/mis_poemas')
+def mispoema():
+    return render_template('mispoemas.html')
+
+@app.route('/usuario_main/usurario_perfil')
+def user_perfil():
+    return render_template('User_perfil.html')
+
+@app.route('/usuario_main/usuario_perfil/usuario_modperfil')
+def user_modperfil():
+    return render_template('User_modperfil.html')
     
 @app.route('/admin_main')
 def admin_main():
     return render_template('admin_main.html')
+
+@app.route('/admin_main/admin_perfil')
+def admin_perfil():
+    return render_template('admin_perfil.html')
 
 @app.route('/admin_main/crear_usuario')
 def crear_usuario():
@@ -26,7 +42,7 @@ def crear_usuario():
 def eliminar_usuario():
     return render_template('eliminar_usuario.html')
 
-@app.route('login')
+@app.route('/login')
 def login():
     return render_template('login.html')
 
