@@ -18,7 +18,7 @@ def crear_poema():
 def mispoema():
     return render_template('mispoemas.html')
 
-@app.route('/usuario_main/usurario_perfil')
+@app.route('/usuario_main/usuario_perfil')
 def user_perfil():
     return render_template('User_perfil.html')
 
