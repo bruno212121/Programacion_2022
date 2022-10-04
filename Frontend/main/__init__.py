@@ -3,6 +3,7 @@ from flask import Flask
 from dotenv import load_dotenv
 from main.routes import routes
 
+
 def create_app():
     #inicia Flask
     app = Flask(__name__)

@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, make_response, url_for, redirect, request
+import requests
+import json
 
 app = Blueprint('app', __name__, url_prefix='/')
 
@@ -44,5 +46,26 @@ def eliminar_usuario():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    #es la url que utilizamos en insomnia
+    api_url = "http://127.0.0.1:5000/auth/login"
+    
+    #Envio de token
+    data = {"email" : "douglasarenas71@hotmail.com", "password" : "1234"}
+    
+    headers = {"Content-Type" : "application/json"}
+    
+    response = requests.post(api_url, json = data, headers = headers)
+
+    #print(response.text)
+    #obtener el token desde response
+    token = json.loads(response.text)
+    token = token["access_token"]
+    print(token)
+
+    #Guardar el token en las cookies y devuelve la pagina 
+    response = make_response(render_template("login.html"))
+    response.set_cookie("access_token", token)
+
+    return response 
+    #return render_template('login.html')
 
