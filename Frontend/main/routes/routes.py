@@ -17,7 +17,7 @@ def crear_poema():
     return render_template('Crear_poema.html')
 
 @app.route('/usuario_main/mis_poemas')
-def mispoema():
+def mis_poema():
     return render_template('mispoemas.html')
 
 @app.route('/usuario_main/usuario_perfil')
@@ -54,13 +54,13 @@ def login():
     
     headers = {"Content-Type" : "application/json"}
     
-    response = requests.post(api_url, json = data, headers = headers)
+    response = requests.post(api_url, json = data, headers = headers) 
 
     #print(response.text)
     #obtener el token desde response
     token = json.loads(response.text)
     token = token["access_token"]
-    print(token)
+    print(token) 
 
     #Guardar el token en las cookies y devuelve la pagina 
     response = make_response(render_template("login.html"))

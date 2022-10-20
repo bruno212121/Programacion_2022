@@ -9,7 +9,7 @@
     {% block content %}
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #0c0396;">
         <div class="container-fluid">
-            <a class="navbar-brand text-warning" href="/">POESIA SIN CORONA</a>   
+            <a class="navbar-brand text-warning" href="{{url_for('app.index')}}">POESIA SIN CORONA</a>   
         </div>
     </nav>
     
@@ -38,7 +38,7 @@
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label text-warning" for="exampleCheck1">Check me out</label>
                     </div>
-                    <a type="submit" class="btn btn-primary" href="/usuario_main">Submit</a>
+                    <a type="submit" class="btn btn-primary" href="{{url_for('app.user_main')}}">Submit</a>
                 </form>
             </div>
         </div>
