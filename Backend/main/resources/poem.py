@@ -6,6 +6,7 @@ from datetime import datetime
 from sqlalchemy import func
 from main.auth.decorators import admin_required_or_poeta_required, poeta_required
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
+
 class Poem(Resource):
     @jwt_required()
     def get(self, id):

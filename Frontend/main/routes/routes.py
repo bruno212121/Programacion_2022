@@ -6,7 +6,10 @@ app = Blueprint('app', __name__, url_prefix='/')
 
 @app.route('/')
 def index():
-    return render_template('main.html')
+    if request.cookies.get('access_token'):
+        return render_template('main.html')
+    else:
+        return redirect(url_for('app.login'))
 
 @app.route('/usuario_main')
 def user_main():
@@ -44,28 +47,40 @@ def crear_usuario():
 def eliminar_usuario():
     return render_template('eliminar_usuario.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    #es la url que utilizamos en insomnia
-    api_url = "http://127.0.0.1:5000/auth/login"
-    
-    #Envio de token
-    data = {"email" : "douglasarenas71@hotmail.com", "password" : "1234"}
-    
-    headers = {"Content-Type" : "application/json"}
-    
-    response = requests.post(api_url, json = data, headers = headers) 
 
-    #print(response.text)
-    #obtener el token desde response
-    token = json.loads(response.text)
-    token = token["access_token"]
-    print(token) 
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        print(email)
+        print(password)
 
-    #Guardar el token en las cookies y devuelve la pagina 
-    response = make_response(render_template("login.html"))
-    response.set_cookie("access_token", token)
+        #es la url que utilizamos en insomnia
+        api_url = "http://127.0.0.1:5000/auth/login"
+        
+        #Envio de token
+        data = {"email" : email, "password" : password}
+        
+        headers = {"Content-Type" : "application/json"}
+        
+        response = requests.post(api_url, json = data, headers = headers) 
+        if response.status_code == 200:
+            print(response.text)
+            print(response.status_code)
+            
+            #obtener el token desde response
+            token = json.loads(response.text)
+            token = token["access_token"]
+            print(token) 
 
-    return response 
-    #return render_template('login.html')
+            #Guardar el token en las cookies y devuelve la pagina 
+            response = make_response(redirect("main.index"))
+            response.set_cookie("access_token", token)
 
+            return response 
+            #return render_template('login.html')
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
