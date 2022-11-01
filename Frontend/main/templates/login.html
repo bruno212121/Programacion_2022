@@ -24,21 +24,21 @@
     <div class="container py-4 bg-black">
         <div class="row justify-content-center">
             <div class="col-sm-12 col-lg-4">
-                <form method="post" action="/login">
+                <form method="POST" action="/login">
                     <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label text-warning">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <input name="email"type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                     </div>
                     <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label text-warning">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
+                    <label  for="exampleInputPassword1" class="form-label text-warning">Password</label>
+                    <input name="password" type="password" class="form-control" id="exampleInputPassword1">
                     </div>
                     <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label text-warning" for="exampleCheck1">Check me out</label>
                     </div>
-                    <a type="submit" class="btn btn-primary" href="{{url_for('app.user_main')}}">Submit</a>
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
