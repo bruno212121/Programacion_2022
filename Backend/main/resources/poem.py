@@ -65,10 +65,11 @@ class Poems(Resource):
                         poems = poems.outerjoin(PoemModel.scores).group_by(PoemModel.id).orden_by(UserModel.name.desc())
 
         poems = poems.paginate(page, per_page, True, 10)
-        return jsonify({"poems": [poem.to_json_short() for poem in poems.items],
+        return jsonify({"poems": [poem.to_json() for poem in poems.items],
                         "total": poems.total,
                         "pages": poems.pages,
                         "page": page})
+                        
     @jwt_required()
     def post(self):
         user_id = get_jwt_identity()

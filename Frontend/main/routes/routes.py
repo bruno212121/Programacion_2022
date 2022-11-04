@@ -1,5 +1,3 @@
-from email import header
-from urllib import response
 from flask import Blueprint, current_app, render_template, make_response, url_for, redirect, request
 import requests
 import json
@@ -9,7 +7,8 @@ app = Blueprint('app', __name__, url_prefix='/')
 @app.route('/')
 def index():
     if request.cookies.get('access_token'):
-        api_url = "http://127.0.0.1:5000/poems" 
+
+        api_url = f'{current_app.config["API_URL"]}/poems' 
 
         data = { "page": 1, "per_page": 10 }
 
@@ -26,16 +25,12 @@ def index():
     else:
         return redirect(url_for('app.login'))
 
-    #if request.cookies.get('access_token'):
-      #  return render_template('main.html')
-    #else:
-     #   return redirect(url_for('app.login'))
 
 @app.route('/usuario_main')
 def user_main():
     if request.cookies.get('access_token'):
         
-        api_url = "http://127.0.0.1:5000/poems"
+        api_url = f'{current_app.config["API_URL"]}/poems'
 
         data = { "page": 1, "per_page": 10 }
 
@@ -50,26 +45,35 @@ def user_main():
     else:
         return redirect(url_for('app.login'))
 
-@app.route('/usuario_main/crear_poema')
+@app.route('/usuario_main/crear_poema', methods=['GET','POST'])
 def crear_poema():
-    if request.cookies.get('access_token'):
-        
-        api_url = "http://127.0.0.1:5000/poems"
-        
-        data = { "page": 1, "per_page": 10 }
-
-        headers = { "Content-Type": "application/json" }
-
-        response = requests.get(api_url, json=data, headers=headers) 
-        return render_template('Crear_poema.html', poems = ["Poems"])
+    jwt = request.cookies.get('access_token')
+    if jwt:
+        if request.method == 'POST':
+            title = request.form['title']
+            body = request.form['body']
+            id = request.cookies.get('id')
+            data = {"title":title,"body":body,"userId": id}
+            headers = { "Content-Type": "application/json", "Authorization": f"Bearer {jwt}"}
+            if title != "" and body != "":
+                response = requests.post(f'{current_app.config["API_URL"]}/poems', json=data, headers=headers)
+                if response.ok:
+                    response = json.loads(response.text)
+                    return redirect(url_for('app.user_main'))
+                else:
+                    return redirect(url_for('app.crear_poema'))
+            else:
+                return redirect(url_for('app.crear_poema'))
+        else:
+            return render_template('Crear_poema.html', jwt=jwt) 
     else:
         return redirect(url_for('app.login'))
-        
+
 @app.route('/usuario_main/mis_poemas')
 def mis_poema():
     if request.cookies.get('access_token'):
         
-        api_url = "http://127.0.0.1:5000/poems"
+        api_url = f'{current_app.config["API_URL"]}/poems'
         
         data = { "page": 1, "per_page": 10 }
 
@@ -84,7 +88,7 @@ def mis_poema():
 @app.route('/usuario_main/usuario_perfil')
 def user_perfil():
     if request.cookies.get('access_token'):
-        api_url = "http://127.0.0.1:5000/poems"
+        api_url = f'{current_app.config["API_URL"]}/poems'
         
         data = { "page": 1, "per_page": 10 }
 
@@ -95,10 +99,11 @@ def user_perfil():
         return render_template('User_perfil.html', poems = ["Poems"])
     else:
         return redirect(url_for('app.login'))
+
 @app.route('/usuario_main/usuario_perfil/usuario_modperfil')
 def user_modperfil():
     if request.cookies.get('access_token'):
-        api_url = "http://127.0.0.1:5000/poems"
+        api_url = f'{current_app.config["API_URL"]}/poems'
         
         data = { "page": 1, "per_page": 10 }
 
@@ -136,7 +141,7 @@ def login():
 
         if email != None and password != None: 
             #es la url que utilizamos en insomnia
-            api_url = "http://127.0.0.1:5000/auth/login"
+            api_url = f'{current_app.config["API_URL"]}/auth/login'
             #Envio de token
             data = {"email" : email, "password" : password}
             headers = {"Content-Type" : "application/json"}

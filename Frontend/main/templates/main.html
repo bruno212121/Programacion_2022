@@ -1,7 +1,11 @@
 {% extends 'index.html' %}
+    {% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static',filename='css/stile_main.css')}}">
+    {% endblock %}
+    
 
     {% block menu %}
-    
     <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #0c0396;">
         <div class="container-fluid">
             <a class="navbar-brand text-warning" href="{{url_for('app.index')}}">POESIA SIN CORONA</a>
@@ -16,7 +20,15 @@
     {% endblock %}
 
     {% block content %}
+    <style>
+        body
+        {
 
+            background-image: url("{{url_for('static',filename='img/fondo1.jpg')}}");
+            /* background-repeat: no-repeat;
+            background-size: 100% 100%; */
+        }
+    </style>
     <div class="container py-4 text-light">
        <div class="row justify-content-center">
             <div class="col-sm-12 col-md-4 col-lg-6 " >
@@ -29,31 +41,24 @@
         <div class="row">
             <div class="col-sm-4 col-lg-12">
                 <table class="table table-dark">
+                    <!-- te lo arma como una lista a los poemas -->
                     <tr>
                         <th>TITULO</th><th>AUTOR</th><th>POEMA</th><th>CALIFICACION</th><th></th>
                     </tr>
-                    <tr>
-                        <td>Elegia</td><td>Bruno Rosales</td><td>las rosas son rojas...</td><th>Calificacion 10</th><td><a type="button" href="#">Ver mas...</a></td>
-                    </tr>
-                    <tr>
-                        <td>Dato 1</td><td>Julian</td><td>Dato 3</td><th>Calificacion 10</th><td><a type="button" href="#">Ver mas...</a></td>
-                    </tr>
-                    <tr>
-                        <td>Dato 1</td><td>Anonimo</td><td>Dato 3</td><th>Calificacion 10</th><td><a type="button" href="#">Ver mas...</a></td>
-                    </tr>
-                    <tr>
-                        <td>Dato 1</td><td>Douglas</td><td>Dato 3</td><th>Calificacion 10</th><td><a type="button" href="#">Ver mas...</a></td>
-                    </tr>
-                    <tr>
-                        <td>Dato 1</td><td>Fernando</td><td>Dato 3</td><th>Calificacion 10</th><td><a type="button" href="#">Ver mas...</a></td>
-                    </tr>
+                    <tbody> 
+                        {% for poem in poems %}
+                        <tr>
+                            <td>{{poem.title}}</td><td>{{poem.user.name}}</td><td>{{poem.body}}</td><th>{{poem.avg_score}}</th><td><a type="button" href="#">Ver mas...</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
                 </table>
             </div>    
         </div>    
     </div>
 
-    <div class="container">
-        <div class="position-absolute bottom-0 start-50 translate-middle-x">
+    <div class="container_footer" >
+        <div class="position-absolute  start-50 translate-middle-x">
             <div class="row">
                 <div class="col-sm-4 col-lg-12">
                     <nav aria-label="Page navigation example">
@@ -75,10 +80,9 @@
                     </nav>
                 </div>    
             </div>    
-    
         </div>
     </div>    
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
