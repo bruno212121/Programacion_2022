@@ -6,24 +6,22 @@ app = Blueprint('app', __name__, url_prefix='/')
 
 @app.route('/')
 def index():
-    if request.cookies.get('access_token'):
+    
+    api_url = f'{current_app.config["API_URL"]}/poems' 
 
-        api_url = f'{current_app.config["API_URL"]}/poems' 
+    data = { "page": 1, "per_page": 10 }
 
-        data = { "page": 1, "per_page": 10 }
+    headers = { "Content-Type": "application/json" }
 
-        headers = { "Content-Type": "application/json" }
+    response = requests.get(api_url, json=data, headers=headers)
+    print(response.status_code)  
+    print(response.text)
 
-        response = requests.get(api_url, json=data, headers=headers)
-        print(response.status_code)  
-        print(response.text)
+    poems = json.loads(response.text)
+    print(poems)
 
-        poems = json.loads(response.text)
-        print(poems)
-
-        return render_template('main.html', poems=poems["poems"])
-    else:
-        return redirect(url_for('app.login'))
+    return render_template('main.html', poems=poems["poems"])
+   
 
 
 @app.route('/usuario_main')
@@ -41,7 +39,7 @@ def user_main():
         print(response.text)
         poems = json.loads(response.text)
         print(poems)
-        return render_template('User_main.html', poems=["Poems"])
+        return render_template('User_main.html', poems=poems["poems"])
     else:
         return redirect(url_for('app.login'))
 
