@@ -1,3 +1,7 @@
 Flask
 python-dotenv
 requests
+flask-login
+PyJWT
+json
+

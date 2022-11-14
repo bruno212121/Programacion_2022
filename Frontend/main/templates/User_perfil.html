@@ -3,7 +3,7 @@
     {% block menu %}
       <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(56, 56, 56);">
         <div class="container-fluid">
-            <a class="navbar-brand text-light" href="{{url_for('app.user_main')}}">POESIA SIN CORONA</a>
+            <a class="navbar-brand text-light" href="{{url_for('main.user_main')}}">POESIA SIN CORONA</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -11,8 +11,7 @@
       </nav>
     {% endblock %}
 
-    {% block content %}    
-
+    {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-md-12 text-light">
@@ -101,8 +100,8 @@
         <div class="row">
             <div class="col">
                 <div class="btn-group d-flex justify-content-center g-col-5">
-                    <a type="button" class="btn btn-danger" href="{{url_for('app.index')}}">Eliminar Cuenta</a>
-                    <a type="button" class="btn btn-info" href="{{url_for('app.user_modperfil')}}">Modificar Cuenta</a>
+                    <a type="button" class="btn btn-danger" href="{{url_for('main.index')}}">Eliminar Cuenta</a>
+                    <a type="button" class="btn btn-info" href="{{url_for('user.user_modperfil')}}">Modificar Cuenta</a>
                 </div>
             </div>
         </div>
