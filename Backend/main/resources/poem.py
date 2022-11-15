@@ -78,7 +78,7 @@ class Poems(Resource):
         user = db.session.query(UserModel).get_or_404(user_id)
         if "rol" in claims:
             if claims['rol'] == "poeta":
-                if len(user.poems) == 0 or len(user.scores) >= 2:
+                if len(user.poems) == 0 or len(user.scores) >= 0:
                     poems.userId = user_id
                     db.session.add(poems)
                     db.session.commit()

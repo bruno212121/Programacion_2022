@@ -27,28 +27,12 @@
     </style>
     
     <div class="container mt-5">
-        {% for poem in poems %}
         <div class="d-flex justify-content-center">
             <div>
-                <h1 class="text-light">" Tus Poemas {{poem.user.name}}"</h1>
+                <h1 class="text-light">" Tus Poemas "</h1>
             </div>
         </div>
-        {% endfor %}
     </div>
-
-      <!-- FILTERS -->
-      <div class="row section-1">
-        <!--Columna -->
-        <div class="col-md-12 ">
-          <div id="filterbar">
-            <select class="poems-filter">
-                <option value="">Filter by DATE</option>
-                <option value="">Filter by TITLE</option>
-                <option value="selected">Filter by RATING</option>
-            </select>
-          </div>
-        </div>
-       </div>
 
        <tbody>
         {% for poem in poems %}
@@ -63,7 +47,7 @@
                 <p>{{poem.body}}</p>
               </div>
               <div class="btn-container">
-                <a type="button" href="#" id="view_btn">View All</a>
+                <a type="button" href="{{url_for('poem.poema', id=poem.id)}}" id="view_btn">View All</a>
               </div>
             </div>
           </div>
