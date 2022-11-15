@@ -75,11 +75,11 @@ def login():
     else:
         return render_template('login.html')
 
-"""
+
 @main.route("/logout")
 def logout():
     resp = make_response(redirect(url_for("main.login")))
     resp.delete_cookie("access_token")
     resp.delete_cookie("id")
     return resp
-"""
+

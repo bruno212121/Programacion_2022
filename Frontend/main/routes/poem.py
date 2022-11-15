@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, url_for, redirect, json, current_app, request
+from flask import json
 import requests
 from . import functions
 
@@ -27,39 +28,24 @@ def mis_poema():
         return redirect(url_for('main.login'))
 
 
-"""
-cookie = request.cookies.get('access_token')
-    if cookie:
-        user_id = request.cookies.get('id')
-
-        url = 'http://127.0.0.1:8500/user' + f'/{user_id}'
-
-        headers = {'Content-type': 'application/json', 'Authorization': f'Bearer {cookie}'}
-
-        response = requests.get(url, headers=headers)
-
-        user = json.loads(response.text)
-
-        print(user)
-
-        return render_template('profile.html', user=user)
-    return render_template('profile.html'
-"""
-
-@poem.route('/usuario_main/crear_poema', methods=['GET','POST'])
+@poem.route('/crear_poema', methods=['GET','POST'])
 def crear_poema():
-    jwt = request.cookies.get('access_token')
+    jwt = functions.get_jwt()
     if jwt:
         if request.method == 'POST':
             title = request.form['title']
             body = request.form['body']
-            id = request.cookies.get('id')
+            print(title)
+            print(body)
+            id = request.cookies.get("id")
             data = {"title":title,"body":body,"userId": id}
             headers = { "Content-Type": "application/json", "Authorization": f"Bearer {jwt}"}
             if title != "" and body != "":
                 response = requests.post(f'{current_app.config["API_URL"]}/poems', json=data, headers=headers)
+                print(response)
                 if response.ok:
                     response = json.loads(response.text)
+                    print(response)
                     return redirect(url_for('main.user_main'))
                 else:
                     return redirect(url_for('poem.crear_poema'))
@@ -69,3 +55,13 @@ def crear_poema():
             return render_template('Crear_poema.html', jwt=jwt) 
     else:
         return redirect(url_for('main.login'))
+
+@poem.route('/poem/<id>', methods=['GET'])
+def poema(id):
+    jwt = functions.get_jwt()
+    api_url = f'{current_app.config["API_URL"]}/poem/{id}'
+    headers = {f"Content-Type" : "application/json", "Authorization" : "Bearer {}".format(jwt)}
+    response = requests.get(api_url, headers=headers)
+    poems = json.loads(response.text)
+    print("el poemaaa",poems)
+    return render_template('ver_poema.html', poems = poems)

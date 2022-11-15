@@ -12,17 +12,16 @@
     {% endblock %}
 
     {% block content %}
-    <div class="container">
+    <div class="container py-4">
         <div class="row">
             <div class="col-md-12 text-light">
                 <form>
-                    <br/><br/>
-                    <h2>Bienvenido Bruno</h2>
+                    <h2>Bienvenido {{user_info.name}} !!</h2>
                     <form>
                     <div class="row">
                         <div class="form-group col-md-6 py-2">
                         <label for="nombre">Nombre</label>
-                        <div class="form-control disable" id="nombre"> Bruno </div>
+                        <div class="form-control disable" id="nombre">{{user_info.name}}</div>
                         </div>
                         <div class="form-group col-md-6 py-2">
                         <label for="con">Contraseña</label>
@@ -32,11 +31,11 @@
                     <div class="row">
                         <div class="form-group py-2 col-md-6">
                         <label for="e-mail">E-mail</label>
-                        <div type="text" class="form-control" id="e-mail">Bruno@hotmail.com</div>
+                        <div type="text" class="form-control" id="e-mail">{{user_info.email}}</div>
                         </div>
                         <div class="form-group col-md-6 py-2">
                         <label for="Calificacion">Calificaciones</label>
-                        <div type="text" class="form-control" id="Calificacion"># Calificaciones</div>
+                        <div type="text" class="form-control" id="Calificacion">{{user_info.num_marks}}</div>
                       </div>
                     </div>
                 </form>
@@ -44,58 +43,6 @@
         </div>
     </div>
     
-
-    <div class="position-relative py-5">
-        <div class="position-absolute top-50 start-50 translate-middle">
-            <h3><p class="fst-italic">TUS POEMAS</p></h3>
-        </div>
-    </div>
-
-    <div class="container py-2">
-        <div class="row">
-            <div class="col">
-                <div class="accordion" id="accordionExample">
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                          Poema 1
-                        </button>
-                      </h2>
-                      <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                          <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                        </div>
-                      </div>
-                    </div>
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                          Poema 2
-                        </button>
-                      </h2>
-                      <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                          <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                        </div>
-                      </div>
-                    </div>
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                          Poema 3
-                        </button>
-                      </h2>
-                      <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                          <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-     
     <div class="container py-4">
         <div class="row">
             <div class="col">

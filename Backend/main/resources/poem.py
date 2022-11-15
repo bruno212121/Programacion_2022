@@ -64,7 +64,7 @@ class Poems(Resource):
                     if value == 'author[desc]':
                         poems = poems.outerjoin(PoemModel.scores).group_by(PoemModel.id).orden_by(UserModel.name.desc())
 
-        poems = poems.paginate(page, per_page, True, 10)
+        poems = poems.paginate(page, per_page, True, 10) 
         return jsonify({"poems": [poem.to_json() for poem in poems.items],
                         "total": poems.total,
                         "pages": poems.pages,

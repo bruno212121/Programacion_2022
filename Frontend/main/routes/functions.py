@@ -33,3 +33,9 @@ def get_headers(without_token = False, jwt = None):
     else:
         return {"Content-Type" : "application/json"}
 
+def get_user_info(id):
+
+    api_url = f'{current_app.config["API_URL"]}/user/{id}'
+    headers = get_headers()
+
+    return requests.get(api_url, headers=headers)
