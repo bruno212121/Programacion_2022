@@ -6,21 +6,26 @@ main = Blueprint('main', __name__, url_prefix='/')
 
 @main.route('/')
 def index():
+
+    data = { "page": 1, "per_page": 6 }
     
+    if 'page' in request.args:
+        data["page"] = request.args.get('page', '')
+
     api_url = f'{current_app.config["API_URL"]}/poems' 
 
-    data = { "page": 1, "per_page": 15 }
-
     headers = { "Content-Type": "application/json" }
-
     response = requests.get(api_url, json=data, headers=headers)
     print(response.status_code)  
     print(response.text)
-
     poems = json.loads(response.text)
     print(poems)
 
-    return render_template('main.html', poems=poems["poems"])
+    pagination = {}
+    pagination["pages"] = json.loads(response.text)["pages"]
+    pagination["current_page"] = json.loads(response.text)["page"]
+
+    return render_template('main.html', poems=poems["poems"], pagination=pagination)
 
 @main.route('/usuario_main')
 def user_main():

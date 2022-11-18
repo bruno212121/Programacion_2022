@@ -37,55 +37,73 @@
     </div>
 
     
-        <div class="container">
+        <div class="container overflow-hidden">
             <div class="col-sm-4 col-lg-12">
                 <table class="table table-dark">
                     <!-- te lo arma como una lista a los poemas -->
                     <tbody> 
-                        <div class="row">
+                        <div class="row row-cols-4 row-cols-lg-3 g-4 g-lg-3">
                             {% for poem in poems %}
-                            <div class="col-md-4">
-                                <div class="card mb-3">
+                            <div class="col-sm-4 col-md-4 card border-dark mb-3" style="max-width: 25rem;">
                                     <img src="{{url_for('static',filename='img/fondo4.jpg')}}" class="img-fluid rounded-start" alt="...">
                                     <h5 class="card-title">{{poem.title}}</h5>
                                     <h7 class="card">AUTOR: {{poem.user.name}}</h7>
                                     <p class="card-text">{{poem.body}}</p>
                                     <a href="{{url_for('poem.poema', id=poem.id)}}" class="btn btn-light">Ver Mas..</a>
-                                </div>
                             </div>
                             {% endfor %}
                         </div>
                     </tbody>
                 </table>
             </div>    
-        </div>    
-
-    <div class="container_footer" >
-        <div class="position-absolute  start-50 translate-middle-x">
-            <div class="row">
-                <div class="col-sm-4 col-lg-12">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                        </ul>
-                    </nav>
-                </div>    
-            </div>    
-        </div>
-    </div>    
+        </div>  
     
+        <footer class="footer">
+            <div class="container">
+                <div class="col-md-12">
+                    <br>
+                   <nav aria-label="Page navigation example">
+                       <ul class="pagination justify-content-center" style="float:center">
+                       {% if pagination.current_page != 1 %}
+                       <li class="page-item">
+                         <a class="page-link"
+                          href="{{ url_for('main.index', page = (pagination.current_page-1)) }}"
+                         >Previous</a>
+                       </li>
+                       {% else %}
+                       <li class="page-item disabled">
+                         <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                       </li>
+                       {% endif %}
+                       {% for n in range(1,pagination.pages+1) %}
+                            {% if n != pagination.current_page %}
+                                 <li class="page-item">
+                                   <a class="page-link" href="{{ url_for('main.index', page = n) }}">{{n}}</a>
+                                 </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">{{n}}</a>
+                                </li>
+                            {% endif %}
+                       {% endfor %}
+                       {% if pagination.current_page != pagination.pages %}
+                       <li class="page-item">
+                         <a class="page-link"
+                          href="{{ url_for('main.index',page = (pagination.current_page+1)) }}" >Next</a>
+                       </li>
+                       {% else %}
+                       <li class="page-item disabled">
+                         <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+                       </li>
+                       {% endif %}
+                       </li>
+                     </ul>
+                   </nav>
+             </div>
+           </div>
+        </footer>
+
+  
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
 
