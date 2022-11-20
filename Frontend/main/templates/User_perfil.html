@@ -25,7 +25,7 @@
                         </div>
                         <div class="form-group col-md-6 py-2">
                         <label for="con">Contraseña</label>
-                        <div type="text" class="form-control" id="con">********</div>
+                        <div type="text" class="form-control" id="con">PASSWORD</div>
                         </div>
                     </div>
                     <div class="row">
@@ -34,8 +34,8 @@
                         <div type="text" class="form-control" id="e-mail">{{user_info.email}}</div>
                         </div>
                         <div class="form-group col-md-6 py-2">
-                        <label for="Calificacion">Calificaciones</label>
-                        <div type="text" class="form-control" id="Calificacion">{{user_info.num_marks}}</div>
+                        <label for="Calificacion">Numero de calificaciones</label>
+                        <div type="text" class="form-control" id="Calificacion">{{user_info.score_amount}}</div>
                       </div>
                     </div>
                 </form>
@@ -47,7 +47,7 @@
         <div class="row">
             <div class="col">
                 <div class="btn-group d-flex justify-content-center g-col-5">
-                    <a type="button" class="btn btn-danger" href="{{url_for('main.index')}}">Eliminar Cuenta</a>
+                    <a type="button" class="btn btn-danger" href="{{url_for('user.eliminar_usuario')}}">Eliminar Cuenta</a>
                     <a type="button" class="btn btn-info" href="{{url_for('user.user_modperfil')}}">Modificar Cuenta</a>
                 </div>
             </div>

@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+    {% block menu %}
+
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgb(56, 56, 56);">
+            <div class="container-fluid">
+                <a class="navbar-brand text-light" href="{{url_for('main.user_main')}}">POESIA SIN CORONA</a>
+            </div>
+        </nav>
+
+    {% endblock %}
+
+    {% block content %}
+    <style>
+        body
+        {
+
+            background-image: url("{{url_for('static',filename='img/fondo2.jpg')}}");
+            background-repeat: no-repeat;
+            background-size: 100% 200%; 
+        }
+    </style>
+
+    <div class="conatiner py-4">
+        <div class="d-flex justify-content-evenly">
+            <div class="row-lg-3">
+                <div class="col-md-12">
+                <form method="POST" id="form2" action="/poem/{{poem.id}}/edit">
+                    <div class="form-group mt-4">
+                        <label for="texto">Titulo</label>
+                        <textarea name="title" id="texto" class="form-control">{{poem.title}}</textarea>
+                    </div>
+                    <div class="form-group mt-4">
+                        <label for="area">Cuerpo</label>
+                        <textarea name="body" rows="10" cols="40"  class="form-control" id="area">{{poem.body}}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3">Editar Poema</button>
+                </form>
+            </div>
+        </div>    
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    {% endblock %}

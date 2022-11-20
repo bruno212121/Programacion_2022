@@ -19,12 +19,26 @@ class Poem(Resource):
         user_id = get_jwt_identity()
         poem = db.session.query(PoemModel).get_or_404(id)
         if "rol" in claims:
-            if claims['rol'] == "admin" or user_id == poem.user_id:
+            if claims['rol'] == "admin" or user_id == poem.userId:
                 db.session.delete(poem)
                 db.session.commit()
             return '', 204
         else:
             return "Only admins and user can delete poem"
+
+    @jwt_required()
+    def put(self, id):
+        poem = db.session.query(PoemModel).get_or_404(id)
+        data = request.get_json().items()
+        user_id = get_jwt_identity()
+        claims = get_jwt()
+        if "rol" in claims:
+            if user_id == int(poem.userId):
+                for key, value in data:
+                    setattr(poem, key, value)
+                db.session.add(poem) 
+                db.session.commit() 
+                return poem.to_json(), 201
 
 class Poems(Resource):
     @jwt_required(optional=True)

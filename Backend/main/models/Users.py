@@ -32,7 +32,7 @@ class User(db.Model):
             'name': self.name,
             'email': self.email,
            # 'password': self.password,
-            #'rol': self.rol,
+            'rol': self.rol,
             'scores': [score.to_json() for score in self.scores],
             'poems': [poem.to_json() for poem in self.poems],
             'poem_amount': len(self.poems),
@@ -45,7 +45,7 @@ class User(db.Model):
             'id': self.id,
             'name': self.name,
            # 'password': self.password,
-           # 'rol': self.rol,
+           #  'rol': self.rol,
              'email': self.email,
         }
         return user_json

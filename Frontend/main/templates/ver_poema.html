@@ -35,9 +35,9 @@
 {% if request.cookies.get('access_token') %}
 <div class="row justify-content-center ">
   <div class="card-text" style="width: 21rem;">
-        <a href="#" class="card-link">Modificar Poema</a>
-        <a href="#" class="card-link">Eliminar Poema</a>
+        <a href="{{url_for('poem.edit_poem', id=poems.id)}}" class="card-link">Modificar Poema</a>
+        <a href="{{url_for('poem.delete_poem', id=poems.id)}}" class="card-link">Eliminar Poema</a>
   </div>
 </div>
-  {% endif %}
+{% endif %}
 {% endblock %}
