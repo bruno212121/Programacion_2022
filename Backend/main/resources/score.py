@@ -2,10 +2,11 @@ from xmlrpc.client import TRANSPORT_ERROR
 from flask_restful import Resource
 from flask import request, jsonify
 from .. import db
-from main.models import ScoreModel, UserModel
+from main.models import ScoreModel, UserModel, PoemModel
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from main.auth.decorators import poeta_required, admin_required_or_poeta_required
 from flask_mail import Mail
+from sqlalchemy import func
 from main.mail.functions import sendMail
 
 class Score(Resource):
@@ -36,8 +37,26 @@ class Score(Resource):
 class Scores(Resource):
     @jwt_required()
     def get(self):
-        scores = db.session.query(ScoreModel).all()
-        return jsonify([score.to_json_short() for score in scores])
+        if request.get_json():
+            filters = request.get_json().items()
+            for key, value in filters:
+                if key == "poemId":
+                    return self.show_marks_by_poem_id(value)
+                if key == "userId":
+                    return self.show_marks_by_user_id(value)
+
+        marks = db.session.query(ScoreModel).all()
+        return jsonify([mark.to_json() for mark in marks])
+    
+    def show_marks_by_poem_id(self, id):
+        marks = db.session.query(ScoreModel)
+        marks = marks.filter(ScoreModel.poem.has(PoemModel.id == id)).all()
+        return jsonify([mark.to_json() for mark in marks])
+
+    def show_marks_by_user_id(self, id):
+        marks = db.session.query(ScoreModel)
+        marks = marks.filter(ScoreModel.user.has(UserModel.id == id)).all()
+        return jsonify([mark.to_json() for mark in marks])
 
 
     @jwt_required()

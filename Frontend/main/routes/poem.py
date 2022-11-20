@@ -58,12 +58,16 @@ def crear_poema():
 
 @poem.route('/poem/<id>', methods=['GET'])
 def poema(id):
+    user_id = functions.get_jwt()
     jwt = functions.get_jwt()
     api_url = f'{current_app.config["API_URL"]}/poem/{id}'
     headers = {f"Content-Type" : "application/json", "Authorization" : "Bearer {}".format(jwt)}
     response = requests.get(api_url, headers=headers)
     poems = json.loads(response.text)
-    return render_template('ver_poema.html', poems = poems)
+    scores = functions.get_scores_by_poem_id(id)
+    scores = json.loads(scores.text)
+    print("scoressssss ",scores)
+    return render_template('ver_poema.html', poems = poems, jwt=jwt, user_id=user_id , scores=scores)
 
 @poem.route('/poem/<id>/edit', methods=['GET','POST'])
 def edit_poem(id):
@@ -96,5 +100,31 @@ def delete_poem(id):
         headers = { "Content-Type": "application/json", "Authorization": f"Bearer {jwt}"}
         response = requests.delete(api_url, headers=headers)
         return redirect(url_for('main.user_main'))
+    else:
+        return redirect(url_for('main.login'))
+
+@poem.route('/poem/<id>/score', methods=['GET', 'POST'])
+def score_poem(id):
+    jwt = functions.get_jwt()
+    if jwt:
+        if request.method == 'GET':
+            api_url = f'{current_app.config["API_URL"]}/poem/{id}'
+            headers = { "Content-Type": "application/json", "Authorization": f"Bearer {jwt}"}
+            response = requests.get(api_url, headers=headers)
+            poem = json.loads(response.text)
+            return render_template('score_create.html', poem=poem)
+
+        if request.method == 'POST':
+            api_url = f'{current_app.config["API_URL"]}scores'
+            headers = {"Content-Type": "application/json", "Authorization" : f"Bearer {jwt}"}
+            user_id = request.cookies.get('id')
+            score = request.form['score']
+            commentary = request.form['comment']
+            response = functions.add_mark(user_id=user_id, poem_id=id, score=score, comment=commentary) 
+            if response.ok:
+                response = json.loads(response.text)
+                return redirect(url_for('main.user_main'))
+            print("ESTE ES EL RESPONSE",response)
+            return redirect(url_for('main.user_main'))
     else:
         return redirect(url_for('main.login'))
