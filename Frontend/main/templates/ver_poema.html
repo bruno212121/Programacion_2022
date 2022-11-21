@@ -24,27 +24,37 @@
 {% block content %}
 
     <div class="row py-5 justify-content-center">
-    <div class="card" style="width: 21rem;">
-        <div class="card-body">
-        <h5 class="card-title">TITULO: {{poems.title}}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">AUTHOR: {{poems.user.name}}</h6>
-        <p class="card-text">CUERPO: {{poems.body}}</p>
+        <div class="card" style="width: 21rem;">
+            <div class="card-body">
+                <h5 class="card-title">TITULO: {{poems.title}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">AUTHOR: {{poems.user.name}}</h6>
+                <p class="card-text">CUERPO: {{poems.body}}</p>
+            </div>
+            {% if poems.user.id == user_id %}     
+                    <a href="{{url_for('poem.edit_poem', id=poems.id)}}" class="card-link">Modificar Poema</a>
+                    <a href="{{url_for('poem.delete_poem', id=poems.id)}}" class="card-link">Eliminar Poema</a>
+            {% endif %}
+            {% if poems.user.id != user_id %}
+                <div class="row justify-content-center ">
+                    <div class="card-text" style="width: 21rem;">
+                        <a href="{{url_for('poem.score_poem', id=poems.id)}}" class="card-link">Agregar calificacion</a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
-    </div>
-
+    
     <!--------------------- scores --------------------------------->
-
-    <div class="col-md-6 second-container">
-        <div class="comment justify-content-center">
+    <div class="row py-5 justify-content-center">
+        <div class="card" style="width: 21rem;">
             <div class="title">
-                <h3>COMMENTS</h3>
+                <h3>COMENTARIOS</h3>
             </div>
             <div class="comments-container">
                 <tbody>
                 {% for score in scores %}
                 <div class="comment-text">
-                    <h8>{{score.user.name}}</h8>
+                    <h8>Usuario: {{score.user.name}}</h8>
                     <p>{{score.comment}}</p>
                 </div>
                 {% endfor %}
@@ -52,20 +62,6 @@
             </div>
         </div>
 
-        {% if poems.user.id == request.cookies.get('id') %}
-        <div class="row justify-content-center ">
-        <div class="card-text" style="width: 21rem;">
-                <a href="{{url_for('poem.edit_poem', id=poems.id)}}" class="card-link">Modificar Poema</a>
-                <a href="{{url_for('poem.delete_poem', id=poems.id)}}" class="card-link">Eliminar Poema</a>
-        </div>
-        </div>
-        {% endif %}
-        {% if poems.user.id != request.cookies.get('id') %}
-            <div class="row justify-content-center ">
-                <div class="card-text" style="width: 21rem;">
-                    <a href="{{url_for('poem.score_poem', id=poems.id)}}" class="card-link">Agregar calificacion</a>
-                </div>
-            </div>
-        {% endif %}
+        
 
 {% endblock %}

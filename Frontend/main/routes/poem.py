@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, redirect, json, current_app, request
+from flask import Blueprint, render_template, url_for, redirect, json, current_app, request, flash, make_response
 from flask import json
 import requests
 from . import functions
@@ -56,18 +56,36 @@ def crear_poema():
     else:
         return redirect(url_for('main.login'))
 
-@poem.route('/poem/<id>', methods=['GET'])
+@poem.route('/poem/<id>', methods=['GET','POST'])
 def poema(id):
-    user_id = functions.get_jwt()
-    jwt = functions.get_jwt()
-    api_url = f'{current_app.config["API_URL"]}/poem/{id}'
-    headers = {f"Content-Type" : "application/json", "Authorization" : "Bearer {}".format(jwt)}
-    response = requests.get(api_url, headers=headers)
-    poems = json.loads(response.text)
-    scores = functions.get_scores_by_poem_id(id)
-    scores = json.loads(scores.text)
-    print("scoressssss ",scores)
-    return render_template('ver_poema.html', poems = poems, jwt=jwt, user_id=user_id , scores=scores)
+    if request.cookies.get('access_token'):
+        user_id = request.cookies.get('id')
+        jwt = functions.get_jwt()
+        api_url = f'{current_app.config["API_URL"]}/poem/{id}'
+        headers = {f"Content-Type" : "application/json", "Authorization" : "Bearer {}".format(jwt)}
+        response = requests.get(api_url, headers=headers)
+        poems = json.loads(response.text)
+        scores = functions.get_scores_by_poem_id(id)
+        scores = json.loads(scores.text)
+        """    
+        if request.method == 'POST':
+            if request.form['comment_method'] == 'comment':                 
+                score = request.form['inlineRadioOptions']
+                commentary = request.form['commentary']
+                user_id = request.cookies.get('id')
+                print("user_iddddddddd", user_id)
+                if score != "" and commentary != "":
+                    response = functions.add_mark(user_id=user_id, poem_id=id, score=score, commentary=commentary)
+                    if response.ok:
+                        flash('Mark added successfully', 'success')
+                        return make_response(redirect(url_for('poem.poema', id=id)))
+                    else:
+                        flash('Error adding mark', 'error')
+                        return render_template('ver_poema.html', poem = poem, scores = scores, jwt=functions.get_jwt())
+                else:
+                    return redirect(url_for('poem.mis_poema'))
+        """
+    return render_template('ver_poema.html', poems = poems, jwt=jwt, user_id=int(user_id) , scores=scores)
 
 @poem.route('/poem/<id>/edit', methods=['GET','POST'])
 def edit_poem(id):

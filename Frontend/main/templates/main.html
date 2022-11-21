@@ -13,7 +13,7 @@
                     <input class="form-control me-auto" type="search" placeholder="Buscar Poemas" aria-label="Search">
                 </form>
                 <ul class="navbar-nav mb-2 mb-lg-10">
-                    <a type="button" class="btn btn-success" href="{{url_for('main.register')}}">Registrarte</a>
+                    <a type="button" class="btn btn-primary" href="{{url_for('main.register')}}">Registrarte</a>
                     <a type="button" class="btn btn-success" href="{{url_for('main.login')}}">Ingresar</a>
                 </ul>    
         </div>
@@ -50,7 +50,7 @@
                                     <h5 class="card-title">{{poem.title}}</h5>
                                     <h7 class="card">AUTOR: {{poem.user.name}}</h7>
                                     <p class="card-text">{{poem.body}}</p>
-                                    <a href="{{url_for('poem.poema', id=poem.id)}}" class="btn btn-light">Ver Mas..</a>
+                                    <a href="{{url_for('main.login')}}" class="btn btn-light">Ver Mas..</a>
                             </div>
                             {% endfor %}
                         </div>

@@ -17,6 +17,7 @@ def index():
     headers = { "Content-Type": "application/json" }
     response = requests.get(api_url, json=data, headers=headers)
     poems = json.loads(response.text)
+    print(poems)
 
     pagination = {}
     pagination["pages"] = json.loads(response.text)["pages"]
