@@ -91,7 +91,7 @@ class Poems(Resource):
         poems = PoemModel.from_json(request.get_json())
         user = db.session.query(UserModel).get_or_404(user_id)
         if "rol" in claims:
-            if claims['rol'] == "poeta":
+            if claims['rol'] == "poeta" or claims['rol'] == "poet":
                 if len(user.poems) == 0 or len(user.scores) >= 0:
                     poems.userId = user_id
                     db.session.add(poems)

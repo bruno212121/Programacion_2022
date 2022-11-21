@@ -66,7 +66,7 @@ class Scores(Resource):
         user_score = db.session.query(UserModel).get(user_id)
         claims = get_jwt()
         if "rol" in claims:
-            if claims['rol'] == "poeta":
+            if claims['rol'] == "poeta" or claims['rol'] == "poet":
                 score.userId = int(user_id)
                 db.session.add(score)
                 db.session.commit()

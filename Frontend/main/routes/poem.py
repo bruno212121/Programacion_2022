@@ -67,24 +67,6 @@ def poema(id):
         poems = json.loads(response.text)
         scores = functions.get_scores_by_poem_id(id)
         scores = json.loads(scores.text)
-        """    
-        if request.method == 'POST':
-            if request.form['comment_method'] == 'comment':                 
-                score = request.form['inlineRadioOptions']
-                commentary = request.form['commentary']
-                user_id = request.cookies.get('id')
-                print("user_iddddddddd", user_id)
-                if score != "" and commentary != "":
-                    response = functions.add_mark(user_id=user_id, poem_id=id, score=score, commentary=commentary)
-                    if response.ok:
-                        flash('Mark added successfully', 'success')
-                        return make_response(redirect(url_for('poem.poema', id=id)))
-                    else:
-                        flash('Error adding mark', 'error')
-                        return render_template('ver_poema.html', poem = poem, scores = scores, jwt=functions.get_jwt())
-                else:
-                    return redirect(url_for('poem.mis_poema'))
-        """
     return render_template('ver_poema.html', poems = poems, jwt=jwt, user_id=int(user_id) , scores=scores)
 
 @poem.route('/poem/<id>/edit', methods=['GET','POST'])
