@@ -19,30 +19,27 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container overflow-hidden">
         <div class="col-sm-4 col-lg-12">
             <table class="table table-dark">
                 <!-- te lo arma como una lista a los poemas -->
                 <tbody> 
-                    <div class="row">
+                    <div class="row row-cols-4 row-cols-lg-3 g-4 g-lg-3">
                         {% for poem in poems %}
-                        <div class="col-md-4">
-                            <div class="card mb-3">
+                        <div class="col-sm-4 col-md-4 card border-dark mb-3" style="max-width: 25rem;">
                                 <img src="{{url_for('static',filename='img/fondo4.jpg')}}" class="img-fluid rounded-start" alt="...">
                                 <h5 class="card-title">{{poem.title}}</h5>
                                 <h7 class="card">AUTOR: {{poem.user.name}}</h7>
                                 <p class="card-text">{{poem.body}}</p>
-                                <h8 class="card">CALIFICACION: {{poem.avg_score}}</h8>
                                 <a href="{{url_for('poem.poema', id=poem.id)}}" class="btn btn-light">Ver Mas..</a>
-                            </div>
                         </div>
                         {% endfor %}
                     </div>
                 </tbody>
             </table>
         </div>    
-    </div>  
-   
+    </div>   
+
     <footer class="footer">
         <div class="container">
             <div class="col-md-12">
