@@ -4,3 +4,4 @@ flask-restful
 flask_sqlalchemy
 flask-jwt-extended
 flask-mail
+werkzeug>=3.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
